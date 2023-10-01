@@ -1,0 +1,33 @@
+﻿version: '3.8'
+
+name: otto
+
+services:
+  
+  logstash:
+    image: logstash:8.10.2
+    restart: always
+    volumes:
+      - ./logstash/logstash.conf/:/usr/share/logstash/pipeline/logstash.conf
+    networks:
+      - elastic-stack
+
+  elasticsearch:
+    image: elasticsearch:8.10.2
+    restart: always
+    environment:
+      - discovery.type=single-node
+      - ELASTIC_USERNAME=elastic
+      - ELASTIC_PASSWORD=,frfkjdf
+    networks:
+      - elastic-stack
+
+  kibana:
+    image: kibana:8.10.2
+    ports: 
+      - '5601:5601'
+    networks:
+      - elastic-stack
+
+networks:
+  elastic-stack:
