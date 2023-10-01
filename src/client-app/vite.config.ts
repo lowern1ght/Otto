@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
-import {devPort, port} from "./src/vite-env";
+import mkcert from 'vite-plugin-mkcert'
 
 function option(port: number) {
   return  {
@@ -11,7 +11,7 @@ function option(port: number) {
 }
 
 export default defineConfig({
-  plugins: [react()],
-  server: option(devPort),
-  preview: option(port)
+  plugins: [react(), mkcert()],
+  server: option(9000),
+  preview: option(80)
 })
