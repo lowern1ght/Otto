@@ -1,11 +1,12 @@
 using System.Globalization;
+using System.Reflection;
 using Serilog.Events;
 using Otto.Logger.DI;
 using Otto.Storage.DI;
 using Otto.Storage.City;
-using Microsoft.EntityFrameworkCore;
 using Otto.CityApi.Models;
 using Otto.Storage.City.Entity;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,7 +53,7 @@ await application.Services
     .ExecuteSeedCityIfNeed(new CancellationToken());
 
 application.MapGet("/", () 
-    => $"{typeof(Program).Namespace} is ready");
+    => $"{Assembly.GetExecutingAssembly().FullName} is ready");
 
 application.MapDefaultControllerRoute();
 

@@ -4,30 +4,24 @@ name: otto
 
 services:
   
-  logstash:
-    image: logstash:8.10.2
+  client-app:
+    hostname: client-app
+    build: 
+      context: ../src/client-app
+      dockerfile: Dockerfile
     restart: always
-    volumes:
-      - ./logstash/logstash.conf/:/usr/share/logstash/pipeline/logstash.conf
-    networks:
-      - elastic-stack
-
-  elasticsearch:
-    image: elasticsearch:8.10.2
+    ports:
+      - "6000:443"
+      - "6001:80"
+  
+  proxy:
+    build:     
+      context: proxy
+      dockerfile: Dockerfile
     restart: always
+    ports:
+      - "8080:80"
     environment:
-      - discovery.type=single-node
-      - ELASTIC_USERNAME=elastic
-      - ELASTIC_PASSWORD=,frfkjdf
-    networks:
-      - elastic-stack
-
-  kibana:
-    image: kibana:8.10.2
-    ports: 
-      - '5601:5601'
-    networks:
-      - elastic-stack
-
-networks:
-  elastic-stack:
+      - CLIENTAPP_PORT=6000
+    depends_on: 
+      - client-app
