@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Otto.WeatherApi.Controllers;
 
 [ApiController]
-[Route("~/api/v1/weather")]
+[Route("weather")]
 public class WeatherController : Controller
 {
     private readonly IMapper _mapper;

@@ -23,12 +23,6 @@ public class CityInitializationService : IInitializationService<CityDbContext>
     
     public async Task ExecuteAsync(CancellationToken token)
     {
-        if (_dbContext.Cities.Any())
-        {
-            _logger.Log(LogLevel.Information, "Initialization not started, cities count is not 0");
-            return;
-        }
-
         try
         {
             await _dbContext.Database.MigrateAsync(token);
@@ -36,6 +30,12 @@ public class CityInitializationService : IInitializationService<CityDbContext>
         catch (Exception exception)
         {
             _logger.Log(LogLevel.Critical, exception.Message);
+            return;
+        }
+     
+        if (_dbContext.Cities.Any())
+        {
+            _logger.Log(LogLevel.Information, "Initialization not started, cities count is not 0");
             return;
         }
         

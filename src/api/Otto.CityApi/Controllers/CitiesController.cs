@@ -7,15 +7,15 @@ using Otto.CityApi.Models;
 namespace Otto.CityApi.Controllers;
 
 [ApiController]
-[Route("~/api/v1/cities/")]
+[Route("cities")]
 public class CitiesController : Controller
 {
     private readonly IMapper _mapper;
     private readonly CityDbContext _dbContext;
     private readonly ILogger<CitiesController> _logger;
 
-    public CitiesController(ILogger<CitiesController> logger
-        , CityDbContext dbContext, IMapper mapper)
+    public CitiesController(ILogger<CitiesController> logger, 
+        CityDbContext dbContext, IMapper mapper)
     {
         _logger = logger;
         _mapper = mapper;

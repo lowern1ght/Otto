@@ -4,24 +4,31 @@ name: otto
 
 services:
   
-  client-app:
-    hostname: client-app
-    build: 
-      context: ../src/client-app
-      dockerfile: Dockerfile
+  city-api:
+    image: city-api
+    build:
+      context: .
+      dockerfile: ../src/api/Otto.CityApi/Dockerfile
     restart: always
+    depends_on: 
+      - city-db
     ports:
-      - "6000:443"
-      - "6001:80"
+      - "5000:80"
+    command: ["dotnet", "ef", "database update", "-s ../src/api/CityApi", "-p ../src/storage/Otto.Storage.City"]
+  
+  city-db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_PASSWORD=,frfkjdf
+    ports:
+      - "5001:5432"
   
   proxy:
-    build:     
-      context: proxy
-      dockerfile: Dockerfile
+    image: nginx:1.25.2
     restart: always
     ports:
       - "8080:80"
-    environment:
-      - CLIENTAPP_PORT=6000
-    depends_on: 
-      - client-app
+    depends_on:
+      - city-api
+    volumes:
+      - ./proxy/nginx.conf:/etc/nginx/conf.d/default.conf

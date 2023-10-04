@@ -52,6 +52,8 @@ if (application.Environment.IsDevelopment())
 await application.Services
     .ExecuteSeedCityIfNeed(new CancellationToken());
 
+application.UseHttpsRedirection();
+
 application.MapGet("/", () 
     => $"{Assembly.GetExecutingAssembly().FullName} is ready");
 
